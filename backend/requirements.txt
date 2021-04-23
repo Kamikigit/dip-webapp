@@ -1,0 +1,8 @@
+uvicorn
+fastapi
+pandas
+numpy
+lightgbm
+aiofiles
+Jinja2
+python-multipart
