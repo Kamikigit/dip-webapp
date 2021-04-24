@@ -14,7 +14,7 @@ def root():
 
 # ファイルを保存する
 @app.post("/{style}")
-def uploaded(style: str, in_file:UploadFile = File(...)):
+async def uploaded(style: str, in_file:UploadFile = File(...)):
     number = uuid.uuid1()
     filename = str(number) + '.csv'
     # path = os.path.join("../uploaded", filename)
@@ -23,7 +23,7 @@ def uploaded(style: str, in_file:UploadFile = File(...)):
     form = await request.form()
     uploadfile = form['content']
 
-    ファイルに書き込む
+    # ファイルに書き込む
     fout = open(path, 'wb')
     while 1:
         chunk = await uploadfile.read(100000)

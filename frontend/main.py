@@ -9,7 +9,8 @@ start = st.button("スタート")
 if start:
     if upfile is not None:
         files = {"file": upfile.getvalue()}
-        res = requests.post(f"http://backend:8080/{style}", files=files)
+        style = "aaaa"
+        res = requests.post(f"http://localhost:8080/{style}", files=files)
         file_path = res.json()
 
         st.write("推論中です・・・")
