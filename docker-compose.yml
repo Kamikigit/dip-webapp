@@ -3,6 +3,7 @@ version: "3.0"
 services:
   frontend:
     build: frontend
+    image: dipweb.azurecr.io/dipweb-front
     ports:
       - 80:80
     depends_on:
@@ -14,6 +15,7 @@ services:
     network_mode: "host"
   backend:
     build: backend
+    image: dipweb.azurecr.io/dipweb-back
     ports:
       - 8080:8080
     volumes:

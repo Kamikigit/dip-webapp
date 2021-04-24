@@ -10,7 +10,7 @@ if start:
     if upfile is not None:
         files = {"file": upfile.getvalue()}
         style = "aaaa"
-        res = requests.post(f"http://localhost:8080/{style}", files=files)
+        res = requests.post(f"http://127.0.0.1:8080/{style}", files=files)
         file_path = res.json()
 
         st.write("推論中です・・・")
