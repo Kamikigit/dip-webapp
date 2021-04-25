@@ -7,32 +7,24 @@ import model
 import shutil
 import pandas as pd
 import base64
+import io
 app = FastAPI()
 @app.get('/')
 def root():
     return {"text": "Hello World."}
 
 @app.post("/upload")
-async def uploaded(in_file:UploadFile = File(...)):
-    print("reading file")
-    filename = f"{str(uuid.uuid1())}.csv"
-    path = os.path.join("./storage", filename)
-    # ファイルに書き込む
-    fout = open(path, 'wb')
-    while 1:
-        chunk = await in_file.read(100000)
-        if not chunk:
-            break
-        fout.write(chunk)
-    fout.close()
+async def uploaded(in_file:bytes = File(...)):
+
+    df = pd.read_csv(io.BytesIO(in_file), encoding='utf-8')
     # 推論中
-    df = batch_predict(filename)
+    df = predict(df)
     csv = df.to_csv(index=False)
     b64 = base64.b64encode(csv.encode()).decode()
     return {"csv": b64}
 
-def batch_predict(filename: str):
+def predict(df):
     ml = model.PredictAPI()
-    pred = ml.predict(filename)
+    pred = ml.predict(df)
     print('finished prediciton')
     return pred

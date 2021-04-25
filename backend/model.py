@@ -11,9 +11,7 @@ class PredictAPI:
         # 推論モデルの読み込み
         self.model = pickle.load(open('trained_model.pkl', 'rb'))
   
-    def predict(self, filename):
-        # データを読み込む
-        test = pd.read_csv(f"./storage/{filename}")
+    def predict(self, test):
         # データ整形
         test_col =[]
         for column in test.columns:
