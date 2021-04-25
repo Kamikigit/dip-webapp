@@ -26,9 +26,7 @@ async def uploaded(in_file:UploadFile = File(...)):
         fout.write(chunk)
     fout.close()
     # 推論中
-    batch_predict(filename)
-
-    df = pd.read_csv(f"./storage/out/{filename}")
+    df = batch_predict(filename)
     csv = df.to_csv(index=False)
     b64 = base64.b64encode(csv.encode()).decode()
     return {"csv": b64}
@@ -37,3 +35,4 @@ def batch_predict(filename: str):
     ml = model.PredictAPI()
     pred = ml.predict(filename)
     print('finished prediciton')
+    return pred

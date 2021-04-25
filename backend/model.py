@@ -25,8 +25,5 @@ class PredictAPI:
         pred = self.model.predict(test)
         # 提出用
         submit = pd.DataFrame({"お仕事No.":test["お仕事No."], "応募数 合計":pred})
-        print("machine learining")
-        os.makedirs("./storage/out", exist_ok=True)
-        submit.to_csv(f"./storage/out/{filename}", index=None)
-        return filename
+        return submit
 
