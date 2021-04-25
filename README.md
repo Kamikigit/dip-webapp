@@ -18,11 +18,11 @@ $ docker login dipweb.azurecr.io --username dipweb
 ## Build
 
 ```
-docker-compose build
-docker-compose push
+$ docker-compose build
+$ docker-compose push
 ```
 
 ## Run
 ```
-docker-compose up -d
+$ docker-compose up -d
 ```

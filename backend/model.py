@@ -3,6 +3,7 @@ from time import sleep
 import pandas as pd
 import pickle
 import lightgbm
+import os
 
 """ 予測 """
 class PredictAPI:
@@ -12,7 +13,7 @@ class PredictAPI:
   
     def predict(self, filename):
         # データを読み込む
-        test = pd.read_csv(filename)
+        test = pd.read_csv(f"./storage/{filename}")
         # データ整形
         test_col =[]
         for column in test.columns:
@@ -25,5 +26,7 @@ class PredictAPI:
         # 提出用
         submit = pd.DataFrame({"お仕事No.":test["お仕事No."], "応募数 合計":pred})
         print("machine learining")
-        submit.to_csv(f"downloads/{filename}", index=None)
+        os.makedirs("./storage/out", exist_ok=True)
+        submit.to_csv(f"./storage/out/{filename}", index=None)
+        return filename
 

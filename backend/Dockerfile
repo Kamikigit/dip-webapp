@@ -4,10 +4,9 @@ WORKDIR /app
 
 COPY requirements.txt .
 # コンテナ内で必要なパッケージをインストール
-RUN pip install -r requirements.txt
-# RUN apk add --no-cache build-base \
-#  && pip install --no-cache-dir --trusted-host pypi.python.org -r requirements.txt \
-#  && apk del build-base
+# RUN pip install -r requirements.txt
+RUN apt update && apt install libgomp1 \
+ && pip install --no-cache-dir --trusted-host pypi.python.org -r requirements.txt
 
 COPY . .
 EXPOSE 8080

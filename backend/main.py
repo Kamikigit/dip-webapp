@@ -1,58 +1,39 @@
-from fastapi import FastAPI, Request, BackgroundTasks
+from fastapi import FastAPI
 from fastapi import File, UploadFile
 from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
 import os
 import uuid
-# import model
+import model
 import shutil
+import pandas as pd
+import base64
 app = FastAPI()
-
 @app.get('/')
 def root():
     return {"text": "Hello World."}
 
-# ファイルを保存する
-@app.post("/{style}")
-async def uploaded(style: str, in_file:UploadFile = File(...)):
-    number = uuid.uuid1()
-    filename = str(number) + '.csv'
-    # path = os.path.join("../uploaded", filename)
-    # async with open(path, 'wb') as out_file:
-    #     out_file.copyfileobj(in_file.file, out_file)
-    form = await request.form()
-    uploadfile = form['content']
-
+@app.post("/upload")
+async def uploaded(in_file:UploadFile = File(...)):
+    print("reading file")
+    filename = f"{str(uuid.uuid1())}.csv"
+    path = os.path.join("./storage", filename)
     # ファイルに書き込む
     fout = open(path, 'wb')
     while 1:
-        chunk = await uploadfile.read(100000)
+        chunk = await in_file.read(100000)
         if not chunk:
             break
         fout.write(chunk)
     fout.close()
-    return {"filename": contents}
-    # return {"number": number}
+    # 推論中
+    batch_predict(filename)
 
+    df = pd.read_csv(f"./storage/out/{filename}")
+    csv = df.to_csv(index=False)
+    b64 = base64.b64encode(csv.encode()).decode()
+    return {"csv": b64}
 
-# バックグラウンドで推論中
 def batch_predict(filename: str):
     ml = model.PredictAPI()
     pred = ml.predict(filename)
     print('finished prediciton')
-
-# @app.get('/{style}')
-# async def batch_prediction(request: Request, style: str, background_tasks: BackgroundTasks):
-#     # if io.check_outputs(filename):
-#     #     raise HTTPException(status_code=404, detail="the result of prediction already exists")
-#     print("predicting....")
-#     filename = os.path.join("../uploaded", filename)
-#     background_tasks.add_task(batch_predict, filename)
-#     return templates.TemplateResponse("predicting.html", {"request": request})
-
-# # ダウンロードする
-# @app.get('/download')
-# async def download(filename: str):
-#     downloadfile = os.path.join("./downloads", filename)
-
-#     return templates.TemplateResponse("download.html", {"request": request})
