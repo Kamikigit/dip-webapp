@@ -3,5 +3,6 @@ fastapi
 pandas
 numpy
 lightgbm
+optuna
 aiofiles
 python-multipart

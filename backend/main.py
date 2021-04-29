@@ -24,7 +24,6 @@ async def uploaded(in_file:bytes = File(...)):
     return {"csv": b64}
 
 def predict(df):
-    ml = model.PredictAPI()
-    pred = ml.predict(df)
+    pred = model.serving(df)
     print('finished prediciton')
     return pred
